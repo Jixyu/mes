@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tiza.mbp.mes.dao.account.UserDao">
+    <select id="hasLoginName" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM sys_user_base WHERE login_name=#{loginName} AND  isdeleted=0;
+    </select>
+
+    <insert id="insert" parameterType="com.tiza.mbp.mes.entity.account.User">
+        INSERT INTO sys_user_base (login_name, real_name, work_telephone, email_address, login_Password, password_salt, isdeleted)
+        VALUES (#{loginName},#{realName},#{workTelephone},#{emailAddress},#{loginPassword},#{passwordSalt},0);
+    </insert>
+
+    <update id="update" parameterType="com.tiza.mbp.mes.entity.account.User">
+        UPDATE sys_user_base
+        SET login_name=#{loginName},real_name=#{realName},work_telephone=#{workTelephone},email_address=#{emailAddress},login_Password=#{loginPassword},password_salt=#{passwordSalt},isdeleted=#{isDeleted}
+        WHERE id = #{id};
+    </update>
+
+    <delete id="deleteById" parameterType="long">
+        UPDATE sys_user_base
+        SET isdeleted=1
+        WHERE id = #{id};
+    </delete>
+
+    <select id="getByLoginName" parameterType="String" resultType="com.tiza.mbp.mes.entity.account.User">
+        SELECT t.id, t.login_name loginName, t.real_name realName, t.work_telephone workTelephone, t.email_address emailAddress,
+        t.login_Password loginPassword, t.password_salt passwordSalt, t.isdeleted isDeleted
+        FROM sys_user_base t WHERE t.login_name=#{loginName} AND t.isdeleted=0;
+    </select>
+</mapper>
